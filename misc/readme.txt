@@ -1,0 +1,1 @@
+This is the api gateway IOS SDK for the prod stage of the comments api
