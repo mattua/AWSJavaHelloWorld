@@ -1,7 +1,5 @@
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.apigateway.AmazonApiGatewayClient;
 
-import com.amazonaws.regions.*;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
@@ -15,9 +13,6 @@ public class TestAWS {
 
     public static void main(String[] args){
 
-        String access_key_id= "AKIAIBPDKCCYWXMYBHOQ";
-
-        String secret_access_key ="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";
 
 
         /*
@@ -26,7 +21,7 @@ public class TestAWS {
          */
 
 
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(access_key_id,secret_access_key);
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(Credentials.access_key_id, Credentials.secret_access_key);
         AmazonS3 s3Client = new AmazonS3Client(awsCreds);
        System.out.println("boom");
 
