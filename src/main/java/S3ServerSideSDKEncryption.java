@@ -1,6 +1,5 @@
 import com.amazonaws.auth.BasicAWSCredentials;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -8,11 +7,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * Created by mattua on 06/06/2016.
@@ -22,8 +18,21 @@ public class S3ServerSideSDKEncryption {
 
     public static void main(String[] args) throws Exception {
 
+
+
+
+
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(Credentials.access_key_id, Credentials.secret_access_key);
-        AmazonS3 s3Client = new AmazonS3Client(awsCreds);
+        AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
+
+
+        for (Bucket bucket:s3Client.listBuckets()){
+
+            BucketUtils.deleteBucket(bucket.getName(), s3Client);
+
+        }
+
+
 
         String newBucketName = "mattua" + System.currentTimeMillis();
         s3Client.createBucket(newBucketName);
