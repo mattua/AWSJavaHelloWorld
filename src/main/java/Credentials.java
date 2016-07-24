@@ -4,9 +4,11 @@
 public class Credentials {
 
 
-    public static final String access_key_id= "AKIAJQF4MJSRDLTIF4YA";
+    public static final String access_key_id= "AKIAJQBA6TTUVSE7ROHA";
 
-    public static final String secret_access_key ="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";
+    public static final String secret_access_key ="QGrcUk+MHgfB0/5nt4tC9qJP6aElVa/MS7cJEqQV";
+
+
 
 }
 

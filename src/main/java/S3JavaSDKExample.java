@@ -13,16 +13,72 @@ import java.nio.file.Paths;
 /**
  * Created by mattua on 06/06/2016.
  */
-public class S3ServerSideSDKEncryption {
+public class S3JavaSDKExample {
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)throws Exception {
+
+        createAndPopulateSimpleBucket();
 
 
+    }
+
+
+    public static void createAndPopulateSimpleBucket() throws Exception {
+
+
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(Credentials.access_key_id, Credentials.secret_access_key);
+
+        AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
+
+
+        for (Bucket bucket:s3Client.listBuckets()){
+
+            BucketUtils.deleteBucket(bucket.getName(), s3Client);
+
+        }
+
+
+
+        String newBucketName = "mattua" + System.currentTimeMillis();
+        s3Client.createBucket(newBucketName);
+
+        final String fileName = "sometext.txt";
+
+        File file = new File(S3JavaSDKExample.class.getResource(fileName).toURI());
+
+        /*
+        remember this is a new bucket and "folders" dont exist in S3, they are logical entities derived from the
+        path specified in the key. S3 is just a key value store.
+
+        they are created on the fly when we upload an object with a specific key path
+
+        Also, the folder setting in the console on the S3 folder for server side encryption is a slightly misleading
+        instruction to encrypt the selected resources - it does NOT set a persistant setting on all resources uploaded
+        into that folder
+
+
+         */
+
+
+        {
+            PutObjectRequest putRequest1 = new PutObjectRequest(newBucketName, "unencrypted/" + fileName + "." + System.currentTimeMillis(), file);
+            PutObjectResult response1 = s3Client.putObject(putRequest1);
+            System.out.println("Uploaded object encryption status is " +
+                    response1.getSSEAlgorithm());
+        }
+
+
+    }
+
+
+
+    public static void demoServerSideEncryption() throws Exception {
 
 
 
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(Credentials.access_key_id, Credentials.secret_access_key);
+
         AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
 
 
@@ -48,7 +104,7 @@ public class S3ServerSideSDKEncryption {
 
         final String fileName = "sometext.txt";
 
-        File file = new File(S3ServerSideSDKEncryption.class.getResource(fileName).toURI());
+        File file = new File(S3JavaSDKExample.class.getResource(fileName).toURI());
 
         /*
         remember this is a new bucket and "folders" dont exist in S3, they are logical entities derived from the
@@ -98,7 +154,7 @@ public class S3ServerSideSDKEncryption {
             throws Exception
     {
 
-        String path = S3ServerSideSDKEncryption.class.getResource(fileName).toURI().getPath();
+        String path = S3JavaSDKExample.class.getResource(fileName).toURI().getPath();
 
 
         byte[] encoded = Files.readAllBytes(Paths.get(path));
