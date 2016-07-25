@@ -159,7 +159,7 @@ public class S3JavaSDKExample {
         String newBucketName = "mattua" + System.currentTimeMillis();
         s3Client.createBucket(newBucketName);
 
-        String policy = BucketUtils.readFileFromResources("encrypted-folder-policy.txt").replace("bucketname",newBucketName);
+        String policy = BucketUtils.readFileFromResources("encrypted-folder-policy-notresource.txt").replace("bucketname",newBucketName);
 
         /*
         This is a bucket policy - the bucket itself must be mentioned in the policy explicitly
