@@ -7,6 +7,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 /**
@@ -16,6 +18,18 @@ import java.util.Iterator;
 
     public class BucketUtils {
         private static String bucketName     = "***bucket name to delete ***";
+
+
+    public static void deleteAllBuckets(AmazonS3Client s3Client) throws Exception {
+        for (Bucket bucket:s3Client.listBuckets()){
+
+            System.out.println("deleting bucket.."+ bucket.getName());
+            BucketUtils.deleteBucket(bucket.getName(), s3Client);
+
+        }
+    }
+
+
 
         public static void deleteBucket(String bucketName,AmazonS3Client s3client) throws IOException {
 
@@ -62,5 +76,17 @@ import java.util.Iterator;
                 System.out.println("Error Message: " + ace.getMessage());
             }
         }
+
+    public static String readFileFromResources(String fileName)
+            throws Exception
+    {
+
+        String path = S3JavaSDKExample.class.getResource(fileName).toURI().getPath();
+
+
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded);
     }
+
+}
 
