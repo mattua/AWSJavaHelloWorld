@@ -18,8 +18,10 @@ public class S3JavaSDKExample {
 
     public static void main(String[] args)throws Exception {
 
-        demoServerSideEncryptionNotResource();
+        System.out.print("boom");
+        //demoServerSideEncryptionNotResource();
 
+        createAndPopulateSimpleBucket();
 
     }
 
@@ -31,15 +33,19 @@ public class S3JavaSDKExample {
 
         AmazonS3Client s3Client = new AmazonS3Client(awsCreds);
 
-        BucketUtils.deleteAllBuckets(s3Client);
+        // BucketUtils.deleteAllBuckets(s3Client);
 
 
-        String newBucketName = "mattua" + System.currentTimeMillis();
+        String newBucketName = "matt" + System.currentTimeMillis();
+
+
         s3Client.createBucket(newBucketName);
 
         final String fileName = "sometext.txt";
 
         File file = new File(S3JavaSDKExample.class.getResource(fileName).toURI());
+
+
 
         /*
         remember this is a new bucket and "folders" dont exist in S3, they are logical entities derived from the
@@ -56,7 +62,7 @@ public class S3JavaSDKExample {
 
 
         {
-            PutObjectRequest putRequest1 = new PutObjectRequest(newBucketName, "unencrypted/" + fileName + "." + System.currentTimeMillis(), file);
+            PutObjectRequest putRequest1 = new PutObjectRequest(newBucketName, fileName + "." + System.currentTimeMillis(), file);
             PutObjectResult response1 = s3Client.putObject(putRequest1);
             System.out.println("Uploaded object encryption status is " +
                     response1.getSSEAlgorithm());
@@ -156,7 +162,7 @@ public class S3JavaSDKExample {
 
         BucketUtils.deleteAllBuckets(s3Client);
 
-        String newBucketName = "mattua" + System.currentTimeMillis();
+        String newBucketName = "matt" + System.currentTimeMillis();
         s3Client.createBucket(newBucketName);
 
         String policy = BucketUtils.readFileFromResources("encrypted-folder-policy-notresource.txt").replace("bucketname",newBucketName);
